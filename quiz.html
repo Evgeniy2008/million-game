@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <title>Гра на мільйон</title>
+
+    <!-- css file link -->
+    <link rel="stylesheet" href="/quiz.css">
+</head>
+<body>
+    <h1 id="title">Гра на мільйон</h1>
+
+    <!-- quiz-container -->
+    <div id="quiz-container">
+        <!-- question container -->
+        <div class="questions">
+            <h2 id="question"></h2>
+            <ol type="A">
+                <div class="one"><li class="option opt0"><span id="option0" onclick="calcScore(this)"></span></li></div>
+                <div class="two"><li class="option opt1"><span id="option1" onclick="calcScore(this)"></span></li></div>
+                <div class="three"><li class="option opt2"><span id="option2" onclick="calcScore(this)"></span></li></div>
+                <div class="four"><li class="option opt3"><span id="option3" onclick="calcScore(this)"></span></li></div>
+                <div class="five"><li class="option opt4"><span id="option4" onclick="calcScore(this)"></span></li></div>
+            </ol>
+            <h4 id="stat"></h4>
+        </div>
+
+        <div class="buttons">
+            <button type="button" class="next">Далі</button>
+        </div>
+
+    </div>
+
+    <!-- scoreboard section -->
+    <div id="scoreboard">
+        <img src="/logo.png" alt="">
+        <h2 id="score-title">Вiтаю! Ви дійшли до мільйона : )<br /><br />Правильних відповідей</h2>
+        <h2 id="score"></h2>
+        <button type="button" id="score-btn" onclick="backToQuiz()">Назад до тесту</button>
+        <button type="button" id="check-answer" onclick="checkAnswer()">Переглянути відповіді</button>
+    </div>
+
+    <!-- answers section -->
+    <div id="answerBank">
+        <h2>Answers :</h2>
+        <ol type="1" id="answers">
+
+        </ol>
+        <button type="button" id="score-btn" onclick="backToQuiz()">Назад до тесту</button>
+    </div>
+    <!-- javascript file source -->
+    <script src="/quiz.js"></script>
+</body>
+</html>

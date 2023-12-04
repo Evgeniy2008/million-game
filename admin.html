@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en-ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./admin.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Admin panel</title>
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+            <h1>Admin panel</h1>
+        </header>
+        <h2 class="list-title">Всі питання</h2>
+        <div class="list">
+<!--             <div class="item">
+                <div class="item-title">Как стать негром?</div>
+                <div class="buttons">
+                    <div class="delete"><button type="submit" class="delete-btn">Видалити</button></div>
+                </div>
+            </div> -->
+        </div>
+        <script>
+        if (localStorage.getItem("data")) {
+            console.log("Ok");
+        } else {
+            localStorage.setItem("data", JSON.stringify([]));
+        }
+        let data = JSON.parse(localStorage.getItem("data"));
+        for (let y = 0; y < data.length; y++) {
+            document.querySelector(".list").innerHTML += `<div class="item"><div class="item-title">${data[y].question}</div><div class="buttons"><div class="delete"><form method="dialog" onsubmit="onForm(this)"><input type="hidden" value="${data[y].question}" /><button type="submit" class="delete-btn">Видалити</button></form></div></div></div>`;
+        }
+        const onForm = (form) => {
+            const value = form.elements[0].value;
+            data = data.filter(item => item.question != value);
+            localStorage.setItem("data", JSON.stringify(data));
+            document.querySelector(".list").innerHTML = "";
+            for (let y = 0; y < data.length; y++) {
+                document.querySelector(".list").innerHTML += `<div class="item"><div class="item-title">${data[y].question}</div><div class="buttons"><div class="delete"><form method="dialog" onsubmit="onForm(this)"><input type="hidden" value="${data[y].question}" /><button type="submit" class="delete-btn">Видалити</button></form></div></div></div>`;
+            }
+        }
+        </script>
+        <form class="form-create" method="dialog">
+            <h2 class="form-title">Саме запитання</h2>
+            <input type="text" name="title" class="input title" placeholder="Саме запитання">
+            <h2 class="form-title">Значення 1</h2>
+            <div class="form-wrapper">
+                <input type="text" name="answer1" class="answer1 input" placeholder="Значення 1">
+                <input type="checkbox" name="checkbox" class="checkbox1 checkbox">
+            </div>
+            <h2 class="form-title">Значення 2</h2>
+            <div class="form-wrapper">
+                <input type="text" name="answer2" class="answer2 input" placeholder="Значення 2">
+                <input type="checkbox" name="checkbox" class="checkbox2 checkbox">
+            </div>
+            <h2 class="form-title">Значення 3</h2>
+            <div class="form-wrapper">
+                <input type="text" name="answer3" class="answer3 input" placeholder="Значення 3">
+                <input type="checkbox" name="checkbox" class="checkbox3 checkbox">
+            </div>
+            <h2 class="form-title">Значення 4</h2>
+            <div class="form-wrapper">
+                <input type="text" name="answer4" class="answer4 input" placeholder="Значення 4">
+                <input type="checkbox" name="checkbox" class="checkbox4 checkbox">
+            </div>
+            <h2 class="form-title">Значення 5</h2>
+            <div class="form-wrapper">
+                <input type="text" name="answer5" class="answer5 input" placeholder="Значення 5">
+                <input type="checkbox" name="checkbox" class="checkbox5 checkbox">
+            </div>
+            <button class="create-btn">Створити завдання</button>
+        </form>
+    </div>
+    <script>
+        const createBtn = document.querySelector(".create-btn");
+        createBtn.addEventListener("click", (e) => {
+            const title = document.querySelector(".title").value;
+            const answers = [document.querySelector(".answer1").value, document.querySelector(".answer2").value, document.querySelector(".answer3").value, document.querySelector(".answer4").value, document.querySelector(".answer5").value];
+            const checkboxes = [document.querySelector(".checkbox1"), document.querySelector(".checkbox2"), document.querySelector(".checkbox3"), document.querySelector(".checkbox4"), document.querySelector(".checkbox5")];
+            let checkForSpaces = 0;
+            let checkForCheckboxes = 0;
+            let trueAnswer;
+            for (let i = 0; i < answers.length; i++) {
+                if (answers[i].length != 0) {
+                    checkForSpaces++;
+                }
+                if (checkboxes[i].checked) {
+                    checkForCheckboxes++;
+                    trueAnswer = answers[i];
+                }
+            }
+            if (checkForSpaces != 0 && title.length != 0 && checkForCheckboxes != 0) {
+                const object = {
+                    question: title,
+                    option: answers.filter(item => item != ""),
+                    answer: trueAnswer
+                };
+                const oldArray = JSON.parse(localStorage.getItem("data"));
+                const newArray = [...oldArray, object];
+                localStorage.setItem("data", JSON.stringify(newArray));
+                for (let i = 0; i < answers.length; i++) {
+                    document.querySelector(`.answer${i+1}`).value = ""
+                    document.querySelector(`.checkbox${i+1}`).checked = false;
+                }
+                document.querySelector(".title").value = "";
+                document.querySelector(".list").innerHTML = "";
+                data = JSON.parse(localStorage.getItem("data"));
+                for (let y = 0; y < data.length; y++) {
+                    document.querySelector(".list").innerHTML += `<div class="item"><div class="item-title">${data[y].question}</div><div class="buttons"><div class="delete"><form method="dialog" onsubmit="onForm(this)"><input type="hidden" value="${data[y].question}" /><button type="submit" class="delete-btn">Видалити</button></form></div></div></div>`;
+                }
+                Swal.fire({
+                    icon: "success",
+                    title: "Питання успішно створено",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Ууупс...",
+                    text: "Ви неправильно заповнили форму!!"
+                });
+            }
+        });
+    </script>
+</body>
+</html>
